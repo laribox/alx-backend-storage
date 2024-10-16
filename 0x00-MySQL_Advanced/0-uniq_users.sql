@@ -7,7 +7,7 @@
 -- If the table already exists, your script should not fail
 -- Your script can be executed on any database
 
-CREATE IF NOT EXISTS TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id int NOT NULL AUTO_INCREMENT,
   email varchar(255) NOT NULL UNIQUE,
   name varchar(255),
