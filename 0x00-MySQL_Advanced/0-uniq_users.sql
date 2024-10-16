@@ -9,7 +9,7 @@
 
 CREATE IF NOT EXISTS TABLE users (
   id int NOT NULL AUTO_INCREMENT,
-  email varchar(255),
+  email varchar(255) NOT NULL UNIQUE,
   name varchar(255),
   PRIMARY KEY (id)
 )
