@@ -1,23 +1,20 @@
---  SQL script that creates a function SafeDiv that divides (and returns) the first by the second number or returns 0 if the second number is equal to 0.
-
---  Requirements:
---  
---  You must create a function
---  The function SafeDiv takes 2 arguments:
---  a, INT
---  b, INT
---  And returns a / b or 0 if b == 0
+-- SQL script that creates a function SafeDiv
+-- This function divides the first number by the second
+-- or returns 0 if the second number is 0.
 
 DELIMITER //
 
-CREATE PROCEDURE SafeDiv(
-  IN a INT,
-  IN b INT,
-  OUT c FLOAT
-)
+CREATE FUNCTION SafeDiv(
+  a INT,
+  b INT
+) 
+RETURNS FLOAT
+DETERMINISTIC
 BEGIN
-     SET c = IF (b = 0, 0, a / b);
+    -- Check if b is 0 to avoid division by zero
+    RETURN IF(b = 0, 0, a / b);
 END
 //
 
 DELIMITER ;
+
