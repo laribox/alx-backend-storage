@@ -4,7 +4,7 @@
 DELIMITER //
 
 CREATE PROCEDURE ComputeAverageWeightedScoreForUser(
-  IN user_id INT,
+  IN `user_id` INT,
 )
 BEGIN
    UPDATE users
