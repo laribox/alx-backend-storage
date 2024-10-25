@@ -12,4 +12,4 @@ def update_topics(mongo_collection, name, topics):
     if not all(isinstance(t, str) for t in topics):
         raise TypeError("topics must be a list of strings")
 
-    mongo_collection.update_many({"name":name},{"$set":{"topics",topics}});
+    mongo_collection.update_many({"name":name},{"$set":{"topics",topics}})
