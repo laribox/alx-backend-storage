@@ -1,46 +1,30 @@
 #!/usr/bin/env python3
-"""
-This module provides displays log stats about Nginx logs stored in MongoDB.
-
-Database: logs
-Collection: nginx
-Display:
-    - First line: x logs where x is the number of documents in this collection
-    - Second line: Methods:
-        5 lines with the count of documents with method = [
-            "GET", "POST", "PUT", "PATCH", "DELETE",
-        ] in this order (with a tab before each line)
-    - One line with the number of documents with:
-        method=GET and path=/status
-"""
-
+'''This module contains the function top_students.
+'''
 from pymongo import MongoClient
 
-ALLOWED_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
-def display_logs(collection):
-    """Prints log statistics for the specified MongoDB collection."""
-    
-    # Total document count
-    log_count = collection.count_documents({})
-    print(f"{log_count} logs")
+def print_nginx_request_logs(nginx_collection):
+    '''Prints stats about Nginx request logs.
+    '''
+    print('{} logs'.format(nginx_collection.count_documents({})))
+    print('Methods:')
+    methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    for method in methods:
+        req_count = len(list(nginx_collection.find({'method': method})))
+        print('\tmethod {}: {}'.format(method, req_count))
+    status_checks_count = len(list(
+        nginx_collection.find({'method': 'GET', 'path': '/status'})
+    ))
+    print('{} status check'.format(status_checks_count))
 
-    # Method counts
-    print("Methods:")
-    for method in ALLOWED_METHODS:
-        method_count = collection.count_documents({"method": method})
-        print(f"\tmethod {method}: {method_count}")
 
-    # Specific GET /status count
-    status_check_count = collection.count_documents({"method": "GET", "path": "/status"})
-    print(f"{status_check_count} status check")
+def run():
+    '''Provides some stats about Nginx logs stored in MongoDB.
+    '''
+    client = MongoClient('mongodb://127.0.0.1:27017')
+    print_nginx_request_logs(client.logs.nginx)
 
-def main():
-    """Main function that connects to MongoDB and displays logs."""
-    client = MongoClient("mongodb://localhost:27017/")
-    collection = client.logs.nginx
-    display_logs(collection)
 
-if __name__ == "__main__":
-    main()
-
+if __name__ == '__main__':
+    run()
